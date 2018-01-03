@@ -1,6 +1,9 @@
 var gulp        = require('gulp');
 var browserSync = require('browser-sync').create();
 var sass        = require('gulp-sass');
+var sourcemaps = require('gulp-sourcemaps');
+var cssmin = require('gulp-cssmin');
+var rename = require('gulp-rename');
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass'], function() {
@@ -14,9 +17,16 @@ gulp.task('serve', ['sass'], function() {
 
 // Compile sass into CSS & auto-inject into browsers
 gulp.task('sass', function() {
-    return gulp.src("app/scss/*.scss")
+    return gulp.src("app/scss/**/*.scss")
         .pipe(sass().on('error',sass.logError))
         .pipe(gulp.dest("app/css"))
+        .pipe(sourcemaps.init())
+        .pipe(cssmin())
+        .pipe(sourcemaps.write())
+        .pipe(rename({
+            suffix:'.min'
+        }))
+        .pipe(gulp.dest('app/css'))
         .pipe(browserSync.stream());
 });
 
