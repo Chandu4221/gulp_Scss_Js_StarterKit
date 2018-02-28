@@ -31,7 +31,7 @@ gulp.task('sass-lint', function (error) {
     .pipe(rename({
         suffix:'.min'
     }))
-    .pipe(gulp.dest('app/css'));
+    .pipe(gulp.dest('app/css'))
     .pipe(browserSync.stream());
 });
 
