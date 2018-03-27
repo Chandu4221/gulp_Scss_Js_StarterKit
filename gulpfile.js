@@ -5,6 +5,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var cssmin = require('gulp-cssmin');
 var rename = require('gulp-rename');
 var sassLint = require('gulp-sass-lint');
+var notify = require("gulp-notify");
 
 // Static Server + watching scss/html files
 gulp.task('serve', ['sass-lint'], function() {
@@ -32,7 +33,8 @@ gulp.task('sass-lint', function (error) {
         suffix:'.min'
     }))
     .pipe(gulp.dest('app/css'))
-    .pipe(browserSync.stream());
+    .pipe(browserSync.stream())
+    .pipe(notify("CSS Compiled Successfully"));
 });
 
 gulp.task('default', ['serve']);
