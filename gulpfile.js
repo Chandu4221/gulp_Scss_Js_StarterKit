@@ -6,6 +6,8 @@ var cssmin = require("gulp-cssmin");
 var rename = require("gulp-rename");
 var sassLint = require("gulp-sass-lint");
 var notify = require("gulp-notify");
+var compass = require("gulp-compass");
+var path = require("path");
 
 // Static Server + watching scss/html files
 gulp.task("serve", ["sass-lint"], function() {
@@ -24,17 +26,14 @@ gulp.task("sass-lint", function(error) {
     .pipe(sassLint())
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError().on("error", error))
+    .pipe(compass({ project: path.join(__dirname, "app"), sass: "scss" }))
     .pipe(sass().on("error", sass.logError))
     .pipe(sourcemaps.init())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest("app/css"))
     .pipe(cssmin())
     .pipe(sourcemaps.write())
-    .pipe(
-      rename({
-        suffix: ".min"
-      })
-    )
+    .pipe(rename({ suffix: ".min" }))
     .pipe(gulp.dest("app/css"))
     .pipe(browserSync.stream())
     .pipe(notify("CSS Compiled Successfully"));
