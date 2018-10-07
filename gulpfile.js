@@ -27,6 +27,9 @@ gulp.task("sass-lint", function(error) {
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError().on("error", error))
     .pipe(compass({ project: path.join(__dirname, "app"), sass: "scss" }))
+    .on("error", function(error) {
+      console.log(error);
+    })
     .pipe(sass().on("error", sass.logError))
     .pipe(sourcemaps.init())
     .pipe(sourcemaps.write())
